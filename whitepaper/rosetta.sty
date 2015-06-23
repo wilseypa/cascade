@@ -1,0 +1,155 @@
+%% Include the user defined float package
+\usepackage{float}
+%% Include the if-then-else package
+\usepackage{ifthen}
+%% Include the listings package - the heart of it all
+\usepackage{listings}
+%% Include an additional font package for semantic parenthesis
+\usepackage{stmaryrd}
+
+%% Define some default domain definitions so they will show up nicely
+%% in text.
+\newcommand{\static}{\lstinline!static!}
+\newcommand{\statebased}{\lstinline!state_based!}
+\newcommand{\statebasedP}[1]{\lstinline!state_based(#1)!}
+\newcommand{\continuous}{\lstinline!continuous!}
+\newcommand{\discrete}{\lstinline!discrete!}
+\newcommand{\discretestate}{\lstinline!discrete_state!}
+\newcommand{\discretestateP}[1]{\lstinline!discrete_state(#1)!}
+\newcommand{\discretetime}{\lstinline!discrete_time!}
+\newcommand{\discretetimesim}{\lstinline!discrete_time_sim!}
+\newcommand{\finitestate}{\lstinline!finite_state!}
+\newcommand{\finitestateP}[1]{\lstinline!finite_state(#1)!}
+\newcommand{\infinitestate}{\lstinline!infinite_state!}
+\newcommand{\infinitestateP}[1]{\lstinline!infinite_state(#1)!}
+\newcommand{\CSP}{\lstinline!CSP!}
+\newcommand{\CMOSpower}{\lstinline!CMOS_power!}
+\newcommand{\softwarepower}{\lstinline!sofware_power!}
+\newcommand{\eventbased}{\lstinline!event_based!}
+\newcommand{\power}{\lstinline!power!}
+\newcommand{\signalbased}{\lstinline!signal_based!}
+\newcommand{\frequency}{\lstinline!frequency!}
+\newcommand{\temporalassertion}{\lstinline!temporal_assertion!}
+\newcommand{\temporalassertionsim}{\lstinline!temporal_assertion_sim!}
+
+
+%% Define some nice symbols for abstract state.
+\newcommand{\abstate}{\ensuremath{\mathcal X}}
+
+%% Define some basic operations and commands for use in math mode.
+
+\newcommand{\andd}{\ensuremath{\mathtt{\; and \;}}}
+%\newcommand{\case}{\ensuremath{\mathtt{case \;}}}
+\newcommand{\Else}{\ensuremath{\mathtt{\; else \;}}}
+\newcommand{\If}{\ensuremath{\mathtt{if \;}}}
+\newcommand{\In}{\ensuremath{\mathtt{\; in \;}}}
+\newcommand{\Is}{\ensuremath{\mathtt{\; is \;}}}
+\newcommand{\isa}{\ensuremath{\mathtt{\; {:}{:}{=} \;}}}
+\newcommand{\istype}{\ensuremath{\mathtt{\;{:}{:}\;}}}
+\newcommand{\Let}{\ensuremath{\mathtt{let \;}}}
+\newcommand{\nott}{\ensuremath{\mathtt{not \;}}}
+\newcommand{\ora}{\ensuremath{\mathtt{\;\mid\;}}}
+\newcommand{\orr}{\ensuremath{\mathtt{\; or \;}}}
+\newcommand{\Then}{\ensuremath{\mathtt{\; then \;}}}
+\newcommand{\typecase}{\ensuremath{\mathtt{typecase \;}}}
+
+%% Set, Bag and Sequence
+\newcommand{\set}[1]{\ensuremath{\{ #1 \}}}
+\newcommand{\midset}[2]{\ensuremath{\set{#1 \mid #2}}}
+\newcommand{\bag}[1]{\ensuremath{\{* #1 *\}}}
+\newcommand{\midbag}[2]{\ensuremath{\bag{#1 \mid #2}}}
+\newcommand{\seq}[1]{\ensuremath{\langle #1 \rangle}}
+\newcommand{\midseq}[2]{\ensuremath{\seq{#1 \mid #2}}}
+
+%% Functions and function types
+\newcommand{\funty}[2]{\ensuremath{<*(\varphi\istype #1)\istype #2 *>}}
+\newcommand{\fun}[3]{\ensuremath{<*(\varphi\istype #1)\istype #2 \Is #3 *>}}
+
+%% Syntax Definition
+\newcommand{\zeroorone}[1]{\ensuremath{\llbracket\; #1\;\rrbracket}}
+\newcommand{\zeroormany}[1]{\ensuremath{\zeroorone{#1}^*}}
+\newcommand{\oneormany}[1]{\ensuremath{\zeroorone{#1}^+}}
+
+%% Use the float package to create floating examples and redefine the
+%% figure and table environments.
+
+\floatstyle{boxed}
+
+%\newfloat{example}{htbp}{loe}
+%\floatname{example}{Example}
+
+\newfloat{rosetta-float}{htbp}{lol}
+\floatname{rosetta-float}{Listing}
+
+\restylefloat{table}
+\restylefloat{figure}
+
+%% Define the base Rosetta language listing style
+
+\lstdefinelanguage{Rosetta}
+  {morekeywords =
+  {qwerty,
+    all,and,array,assumptions,as,
+    be,begin,between,body,bottom,
+    case,component,constant,
+    data,definitions,den,design,div,dom,domain,
+    element,else,elseif,end,enumeration,exists,export,
+    facet,false,forall,from,functor,
+    if,implications,in,input,interaction,interface,is,
+    let,
+    max,min,mod,multiset,
+    nand,nmax,nmin,not,nor,null,num,
+    or,output,of,package,
+    ran,rem,ret,
+    sel,sequence,set,sharing,sub,subtype,
+    then,to,top,translator,true,type,
+    use,var,verification,
+    where,with
+    xnor,xor,
+    zwerty}
+  otherkeywords = 
+  {=,==,,=>,<=,>=,=<,-,+,*,/,\&,\^}
+  sensitive=false,
+  comment=[l]{//},
+  string=[b]",
+  basicstyle=\small\sffamily,
+  basewidth={0.5em,0.45em},
+  flexiblecolumns=true,
+  stringstyle=\ttfamily,
+  showstringspaces=true
+}
+
+%% Create listing environments for rosetta and rosetta with math escapes
+
+\lstnewenvironment{rosetta}
+  {\lstset{language=rosetta}}
+  {}
+
+\lstnewenvironment{rosetta-math}
+  {\lstset{language=rosetta,mathescape=true}}
+  {}
+
+%% Semantic definition commands.
+
+\newcommand{\bbracket}[1]{\ensuremath{\llbracket #1 \rrbracket}}
+
+\newcommand{\theE}{\ensuremath{\mathcal E}}
+
+\newcommand{\theT}{\ensuremath{\mathcal T}}
+
+\newcommand{\theC}{\ensuremath{\mathcal C}}
+
+\newcommand{\denote}[3]{\ensuremath{#1 \llbracket #2\rrbracket #3}}
+
+\newcommand{\eval}[2]{\ensuremath{\denote{\theE}{#1}{#2}}}
+
+\newcommand{\typeof}[2]{\ensuremath{\denote{\theT}{#1}{#2}}}
+
+\newcommand{\compile}[2]{\ensuremath{\denote{\theC}{#1}{#2}}}
+
+\newcommand{\denotes}[2]{\ensuremath{#1 = #2}}
+
+\newcommand{\defines}[2]{\ensuremath{#1 \equiv #2}}
+
+\lstset{language=Rosetta}
+

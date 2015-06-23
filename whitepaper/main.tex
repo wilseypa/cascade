@@ -1,9 +1,14 @@
-
 \documentclass[12pt]{article}
 
 \usepackage{fullpage}
 \usepackage{times}
 \usepackage{url}
+
+\usepackage{rosetta}
+\usepackage{graphicx}
+%\usepackage{diagrams}
+\usepackage{comment}
+
 
 \begin{document}
 
@@ -50,12 +55,245 @@ Technical Point of Contact: \begin{minipage}[t]{4in}
 
 \section{Introduction}
 
-This document addresses \textbf{TA2} and presents ideas for the modeling of complex
-heterogeneous networked mjulti-scale systems-of-systems (SoS).  The proposed approach uses
-a \emph{Lattice of Coalgebras} to provide a framework that enables the design and quantitative
-assessments of SoS systems.  Unique to this framework is the ability to evaluate numerous
-constraints, including functional, cost, performance, and power as well as providing a
-basis for \emph{safe} abstraction and refinement transformations to the design.
+This document addresses \textbf{TA2} and presents ideas for the
+modeling of complex heterogeneous networked mjulti-scale
+systems-of-systems (SoS).  The proposed approach uses a \emph{Lattice
+  of Coalgebras} to provide a framework that enables the design and
+quantitative assessments of SoS systems.  Unique to this framework is
+the ability to evaluate numerous constraints, including functional,
+cost, performance, and power as well as providing a basis for
+\emph{safe} abstraction and refinement transformations to the design.
 
+\subsection{A Lattice of Domains}
+
+Vocabulary and semantics for defining models in a specific domain can
+be thought of as a \emph{modeling domain} or simply \emph{domain}.
+Each domain provides to varying degrees units of semantic
+representation, a model of computation, and a domain specific modeling
+vocabulary.  Ideally, a domain defines a collection of definitions
+that characterize a particular computation or modeling style.
+
+When a new model is written, it \emph{extends} a domain using that
+domain as a semantic basis an to define vocabulary.  In this way, the
+domain defines the type of a model.  For example, if a simulator is
+defined of type \lstinline!state_based!, then the concepts of state,
+change and event are available as a built-in part of the specification
+vocabulary.
+
+When a new modeling domain is defined, it is typically a subdomain of
+some existing modeling domain.  Like a model, the new domain extends
+the original domain and inherits all of that domain's declarations.
+If a new \lstinline!discrete_time! domain is defined as a subtype of
+\lstinline!state_based!, then the notions state and change are
+inherited and refined within the new domain.
+
+Modeling domains and their associated extensions define a lattice we
+will refer to as a \emph{domain lattice}.  The set of domains, $D$,
+together with the homomorphism relationships resulting from extension
+define a partially ordered set $(D,\Rightarrow)$.  Join ($\sqcup$) and
+meet ($\sqcap$) can subsequently be defined as the least common
+supertype and greatest common subtype of any pair of domains.  It can
+easily be proved that any domain pair will in fact have a least common
+supertype and a greatest common subtype.  The \lstinline!null! domain
+is the least domain in the collection and all domains inherit from it.
+\lstinline!bottom! is the greatest domain and inherits from all
+domains making it inconsistent.  Specifically:
+
+\[\forall f::facet \cdot \mathsf{bottom} \Rightarrow f \wedge f \Rightarrow \mathsf{null}\]
+
+Including \lstinline!null! and \lstinline!bottom! with the partially
+ordered set $(D,\Rightarrow)$ defines a lattice whose top and bottom
+elements are \lstinline!null! and \lstinline!bottom! respectively:
+
+\[(D,\Rightarrow,\sqcup,\sqcap,\mathsf{null},\mathsf{bottom})\]
+
+\subsection{Coalgebraic Semantics}
+
+The semantics of both domains and models is denoted by a
+coalgebra~\cite{Jacobs:97:A-Tutorial-on-C} defining observations on an
+abstract state, $\abstate$.  The signature for a coalgebra is:
+
+\[\langle x,y,z,s \rangle::\abstate \rightarrow
+T_x\times T_y\times T_z\times T_s\]
+
+\noindent where $x$, $y$, $z$, and $s$ are observations on $\abstate$
+and $T_x$ through $T_s$ are the types of those observations.  When $s$
+is treated as state, this signature has the form of a classic Rosetta
+facet coalgebra.  For any observation, $x$, made relative to state,
+the associated type will be:
+
+\[T_s\rightarrow T_x\]
+
+\noindent a functional mapping from a state value to a value of the type
+associated with the observation.  One particularly important
+observation is the next state given by \lstinline!next(s)!:
+
+\[T_s\rightarrow T_s\]
+
+\noindent mapping one system state observation to another.
+
+We choose coalgebras over their better known duals, algebras, due to
+the non-terminating and heterogeneous nature of the types of systems
+we model.  Coalgebras are more natural than algebras for representing
+non-terminating systems.  The inductive proof theory associated with
+algebras requires a base case or initial state that may not exist in
+many embedded systems.  As stream transformers, coalgebras and their
+associated proof techniques are well equipped to deal with reactive,
+non-terminating embedded systems.
+
+The heterogeneous nature of system-level specifications requires that
+multiple computation models be considered during modeling and
+analysis.  In the coalgebra, $\abstate$ can be held abstract with no
+associated concrete type.  Specific states simply become observations
+of the abstract state making multiple simultaneous state observations
+possible.  Furthermore, by defining relationships between states in
+different domains, one can relate information associated with one
+state observation to information associated with other state
+observations.  This critical feature allows determination of when
+information observed in one domain impacts information observed in
+another.
+
+\section{Lattice of Coalgebras}
+
+Using this semantic basis, we can use the domain lattice to define
+specification transformation and composition.  Additionally, the
+lattice facilitates establishing the safety of such operations using
+Galois connections.  Each of these is critical to supporting model
+heterogeneity and composition necessary for system-level design.
+
+% Functors and products discussed in this section and homomorphisms
+% discussed earlier are examples of reflective Rosetta operations making
+% up the \emph{facet algebra} used to compose specifications.  Products
+% compose specifications and functors transform specifications to define
+% new specifications. Homomorphism is a relation over specification
+% pairs.  Other important facet algebra operations include equivalence
+% (isomorphism), relabeling and instantiation.
+
+\begin{figure}[hbtp]
+%  \centering
+%  \includegraphics[width=0.9\textwidth]{figures/semi-lattice-detailed.pdf}
+  \caption{The Rosetta Domain Lattice}
+  \label{fig:semi-lattice-detailed}
+\end{figure}
+
+\subsection{Functors and Specification Transformation}
+
+A \emph{functor} in the domain lattice is a function specifying a
+mapping from one domain to another.  The primary role of functors in
+the domain lattice is to transform a model in one domain into a model
+in another.  Viewing each domain and facets comprising its type as a
+subcategory of the category of all Rosetta specifications, a functor
+is simply a mapping from one subcategory to another.  Any model in the
+original category can be transformed into a model in the second.
+This corresponds to the classic definition of functors in category
+theory.
+
+When defining domains by extension, two kinds of functors result.
+Instances of concretization functors, $\Gamma$, are defined each time
+one domain is extended to define another.  Abstraction functions, $A$,
+are the dual of concretization functions and are known to exist for
+each $\Gamma$ due to the multiplicative nature of extension.  $\Gamma$
+instances move down in abstraction while $A$ instances move up.  Each
+extension between domains defines both an instance of $\Gamma$ and
+$A$.  However, $A$ and $\Gamma$ do not form an isomorphism because $A$
+is lossy -- some information must be lost or $A$ cannot truly be an
+abstraction function.
+
+\subsection{Safety and Galois Connections}
+
+Abstract interpretation~\cite{Cousot:00:Abstract-Interp} provides a
+capability for focusing analysis by eliminating unneeded detail from a
+specification.  Among the most challenging problems in abstract
+interpretation is assuring that once the abstraction is performed the
+resulting model is faithful to the original. This is the notion of
+\emph{safety} -- assuring that when an abstraction is performed, the
+information retained is correct.  Establishing a \emph{Galois
+  connection} \cite{Nielson:05:Principles-of-P} between domains in the
+lattice provides exactly this assurance.
+
+A Galois connection ($C,\alpha,\gamma,A$) exists between two complete
+lattices ($C$, $\sqsubseteq$) and ($A$, $\sqsubseteq$) if and only if
+
+\[\alpha:C \rightarrow A \wedge \gamma:C \leftarrow A\]
+
+\noindent are monotone functions that satisfy:
+
+\begin{equation}
+\label{eq:c1}
+\gamma \circ \alpha \sqsupseteq \lambda c.c
+\end{equation}
+\begin{equation}
+\label{eq:c2}
+\alpha \circ \gamma \sqsubseteq \lambda a.a
+\end{equation}
+
+The two conditions above express that we do not sacrifice safety by
+going back and forth between the two domains although we may lose
+precision.  For our purposes the notion of precision isn't important.
+We simply want to assure that by moving back and forth between domains
+we maintain a safe approximation of the original model.
+
+Condition~\ref{eq:c1} states that abstraction ($\alpha$) followed by
+concretization ($\gamma$) of a specification or model results in
+either the same specification or model, or one \emph{more abstract}
+than the original yet still safe.  Condition~\ref{eq:c2} states that
+concretization followed by abstraction of a specification or model will result
+in either that same specification or model, or one \emph{less abstract} than
+it.
+
+We have stated that extension of one domain to form another gives us a
+concretization function, $\Gamma$, that defines a homomorphism between
+domains.  Because $\Gamma$ is multiplicative, we are assured by nature
+of the lattice that an inverse, $A$, exists and can be derived from
+it.  Thus, for any domain pair that is ordered by the lattice, we can
+define functors that move a specification between them.
+
+With the domain lattice, $A$, $\Gamma$ and the homomorphism, we can
+now define a Galois connection between any domain, $D_0$, and any of
+its subdomains, $D_1$, as $(D_0,A_1,\Gamma_1,D_1)$.  With the
+existence of the Galois connection we can now assure safety of any
+transformation between these two domains.  Furthermore, the
+``functional composition'' of two Galois connections is also a Galois
+connection \cite{Nielson:05:Principles-of-P}. Formally, if $(D_0, A_1,
+\Gamma_1, D_1)$ and $(D_1, A_2, \Gamma_2,D_2)$ are Galois connections
+then
+
+\[(D_0, A_2 \circ A_1, \Gamma_1 \circ \Gamma_2, D_2)\]
+
+\noindent is also a Galois connection.  This is important because not only
+can we assure safety between any domain and its subdomain, but we can
+also assure safety of any transformation throughout the entire domain
+lattice.  
+
+\subsection{Specification Composition}
+
+The primary specification composition mechanisms in the domains
+lattice are the \emph{product} and \emph{pullback}
+constructions~\cite{Ehrig:85:Fundamentals-of}.  A specification
+product is simply a pair of specifications that simultaneously
+describe a system.  Because the specifications simultaneously hold,
+they must be mutually consistent.  Mutual consistency between
+specifications in different domains implies consistency among
+heterogeneous specifications -- precisely a goal of system-level
+design.
+
+In the traditional formal specification literature where algebraic
+semantics dominate, the \emph{coproduct} and \emph{pushout} are the
+dominant specification composition
+constructions~\cite{Ehrig:85:Fundamentals-of,Smith:93:Constructing-Sp,Smith:90:KIDS:-A-Semiaut}.
+Traditionally, a pushout of specifications forms the union of two
+specifications where shared specification that is jointly constrained
+in both specifications.  With coalgebras, the product is the
+appropriate composition operator as we are looking for an interaction.
+
+Formally, Given two models $A$ and $B$ the product is formed from the
+disjoint combination of $A$ and $B$. As the composition is disjoint,
+there is no possibility of interaction.  A pullback is a special
+construction for forming a product where each element is derived from
+a common specification, $C$.  The elements of $C$ are shared between
+specifications -- when properties from $A$ and $B$ refer to
+elements of $C$, they are the same element.  Properties placed on
+symbols of $C$ from each specification mutually constrain $C$ and $A$
+and $B$ are no longer orthogonal.
 
 \end{document}

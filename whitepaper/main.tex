@@ -8,8 +8,10 @@
 \usepackage{graphicx}
 %\usepackage{diagrams}
 \usepackage{comment}
+\usepackage{color}
 
-
+\newcommand{\nael}[1]{\color{blue}{ \em #1 }\color{black}}
+%renewcommand{\nael}[1]{}
 \bibliographystyle{unsrt}
 
 \begin{document}
@@ -35,7 +37,7 @@ Technical Area: \textbf{TA2}
 Organizations: \begin{minipage}[t]{4in}
   \textsf{University of Cincinnati} \\
   \textsf{University of Kansas} \\
-  \textsf{University of California @ Riverside}
+  \textsf{University of California, Riverside}
 \end{minipage}
 
 \bigskip
@@ -57,21 +59,46 @@ Technical Point of Contact: \begin{minipage}[t]{4in}
 
 \section{Introduction}
 
-This document addresses \textbf{TA2} and presents ideas for the multi-resolution modeling
-of complex heterogeneous networked multi-scale systems-of-systems (SoS).  The proposed
-approach uses a \emph{Lattice of Coalgebras} to provide a framework that enables the
-design and quantitative assessments of SoS systems.  The use of a Lattice of Coalgebras
-promotes the ability to bring together heterogeneous multi-domain models into a common
-framework to access the impact of local decisions on global properties.  By using a
-lattice-based approach we can use Galois connections and functors to develop \emph{safe}
-transformations between disparate domains.  These safe transforms then allow the alignment
-of multi-domain system models into a unifying SoS model for analysis.  Furthermore, we
-propose using coalgebras (over algebras) due to the non-terminating and heterogeneous
-nature of SoS.  Coalgebras are more natural than algebras for representing non-terminating
-systems.  The inductive proof theory associated with algebras requires a base case or
-initial state that may not exist in many embedded systems.  As stream transformers,
-coalgebras and their associated proof techniques are well equipped to deal with reactive,
-non-terminating embedded systems.
+We propose a framework and associated tools for multi-resolution
+modeling and analysis of complex heterogeneous networked multi-scale
+systems-of-systems (SoS) targeting Technical Area \textbf{TA2}.  The
+proposed approach uses a \emph{Lattice of Coalgebras} to provide a
+framework that enables the design and quantitative assessments of SoS
+systems.  The Lattice of Coalgebras enables bringing together
+heterogeneous multi-domain models into a common framework to assess
+the impact of local decisions on global system properties.  In
+particular, we propose to use Galois connections and functors to
+develop \emph{safe} transformations between disparate domains and
+scales.  These safe transformations enable the alignment of
+multi-domain system models into a unifying SoS domain for analysis.
+Furthermore, we propose using coalgebras (over algebras) due to the
+non-terminating and heterogeneous nature of SoS since they are more
+natural than algebras for representing such systems.  The inductive
+proof theory associated with algebras requires a base case or initial
+state that may not exist in many embedded systems.  As stream
+transformers, coalgebras and their associated proof techniques are
+well equipped to deal with reactive, non-terminating embedded systems.
+
+\nael{ We need a domain to use as our case study here and to ground
+  the descriptions.  The call mentions electronic warfare (EW),
+  Intelligence surveillance and reconnaisance (ISR) and strike (which
+  I assume is what it sounds like.)  Examples of EW and ISR from a
+  quick search and skim include UaVs interacting with manned systems.
+  At one scale you have sensor data streaming with fine grained
+  spatio-temporal resolution, and at another you are making tactical
+  decisions at possibly much larger times and scales.}
+
+\nael{From an AFOSR call on EW/ISR: ``The ultimate goal for airborne
+  ISR and AEW/C2BM is to enable decision superiority and this will
+  continue to be enabled by the confluence of hardware assets and the
+  operators and analysts. Budgets will underpin the makeup of future
+  capabilities and dictate the economics of introducing new platforms
+  versus upgrading capabilities as existing platforms approach
+  critical junctures in their operational lifecycle. In the case of
+  radar systems, demand will come from existing platforms being
+  retrofitted and upgraded, as well as opportunities from new manned
+  and unmanned platforms, driving shipments a CAGR of 5 percent
+  through 2022.''  }
 
 \subsection{A Lattice of Domains}
 

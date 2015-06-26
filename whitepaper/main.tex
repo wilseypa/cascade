@@ -11,7 +11,7 @@
 \usepackage{color}
 
 \newcommand{\nael}[1]{\color{blue}{ \em #1 }\color{black}}
-%renewcommand{\nael}[1]{}
+\renewcommand{\nael}[1]{}
 \bibliographystyle{unsrt}
 
 \begin{document}
@@ -338,7 +338,7 @@ of $C$, they are the same element.  Properties placed on symbols of
 $C$ from each specification mutually constrain $C$ and $A$ and $B$ are
 no longer orthogonal.
 
-\section{Systems of Systems}
+\section{Systems of Systems for EW and ISR}
 
 A mathematics for transforming and composing models with formal
 guarantees is precisely the semantic system needed for modeling
@@ -355,11 +355,12 @@ Defining abstraction and concretization morphisms among modeling
 domains allows moving data among modeling domains.  In the context of
 modeling systems-of-systems, this corresponds to directly connecting
 or otherwise allowing interactions among models that may have quite
-different semantic bases.  In an ISR domain this allows modeling the
-transformation of continuous sensor data into discrete events useful
-for an analyst.  Modeling inputs to analysts as an abstraction of a
-continuous information flow not only allows traditional connection,
-but verifying behavior in both domains.
+different semantic bases.  In an Intelligence surveillance and
+reconnaisance (ISR) domain this allows modeling the transformation of
+continuous sensor data into discrete events useful for an analyst.
+Modeling inputs to analysts as an abstraction of a continuous
+information flow not only allows traditional connection, but verifying
+behavior in both domains.
 
 The multiplicative nature of functors means that connections can be
 established between literally any set of models in the domain lattice.
@@ -393,9 +394,10 @@ allows modeling a system using a collection of models representing
 different modeling perspectives. In an ISR domain such as software
 defined radio or network, a security model defining confidentiality
 and integrity properties can be written and composed with a system
-model for analysis~\cite{Kimmell:08:System-Synthesi}.  Similarly, a EW
+model for analysis~\cite{Kimmell:08:System-Synthesi}.  Similarly, an
+Electronic Warfare (EW)
 system may be modeled as a collection of operational modes that are
-composed for analysis or system definition.
+composed for analysis or for a complete system definition.
 
 \subsection{Coalgebra Reification}
 
@@ -417,6 +419,12 @@ is feasible.  Thus, a domain in the domain lattice can be synthesized
 into a simulator for models in that domain.  One need not synthesize
 each model, but only the underlying domain and specification morphisms
 associated with it.
+
+We see applications in both the ISR and EW domains.  In ISR synthesis
+of MAC policies from security models, synthesis of security protocol
+implementations from analyzed models, synthesis of triggers and
+filters from models of information abstraction.  In EW synthesis of
+implementations and simulations from waveforms and adversary models.
 
 \bibliography{sldg}
 

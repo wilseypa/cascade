@@ -104,11 +104,10 @@ well equipped to deal with reactive, non-terminating embedded systems.
 
 The vocabulary and semantics for defining models in a specific domain
 can be thought of as a \emph{modeling domain} or simply \emph{domain}.
-Each domain provides, to varying degrees, units of semantic
-representation: (i) a model of computation, and (ii) a domain specific
-modeling vocabulary.  Ideally, a domain defines a collection of
-definitions that characterize a particular computation or modeling
-style.
+Each domain provides units of semantic representation: (i) a model of
+computation, and (ii) a domain specific modeling vocabulary.  Ideally,
+a domain defines a collection of definitions that characterize a
+particular computation or modeling style.
 
 When a new model is written, it \emph{extends} a domain using that
 domain as a semantic basis to define vocabulary.  In this way, the
@@ -270,7 +269,7 @@ lattices ($C$, $\sqsubseteq$) and ($A$, $\sqsubseteq$) if and only if
 \alpha \circ \gamma \sqsubseteq \lambda a.a
 \end{equation}
 
-The two conditions above express that we do not sacrifice safety by
+\noindent These conditions state that we do not sacrifice safety by
 going back and forth between the two domains although we may lose
 precision.  For our purposes the notion of precision is not important.
 We simply want to assure that by moving back and forth between domains
@@ -352,62 +351,63 @@ whose semantics can be fully or partially verified.
 \subsection{Abstraction and Concretization}
 
 Defining abstraction and concretization morphisms among modeling
-domains allows moving data among modeling domains.  In the context of
-modeling systems-of-systems, this corresponds to directly connecting
-or otherwise allowing interactions among models that may have quite
-different semantic bases.  In an Intelligence surveillance and
+domains allows moving data across semantic boundaries.  In the context
+of systems-of-systems, this corresponds to directly connecting or
+otherwise allowing interactions among models that may have quite
+different underlying semantics.  In an intelligence surveillance and
 reconnaisance (ISR) domain this allows modeling the transformation of
-continuous sensor data into discrete events useful for an analyst.
-Modeling inputs to analysts as an abstraction of a continuous
-information flow not only allows traditional connection, but verifying
-behavior in both domains.
+continuous sensor data into discrete events useful for an analyst;
+understanding interactions between seemingly isolated system
+components; and modeling interacting systems whose timing
+characteristics differ radically.
 
 The multiplicative nature of functors means that connections can be
 established between literally any set of models in the domain lattice.
-The formalism allows formal modeling of data fusion for ISR where
-multiple information flows at different abstraction levels with
-disparate underlying semantics.  Similarly, we can treat information
-loss due to communication errors or countermeasures as an abstraction.
-Subsystems see the lossy, abstracted signal and a concretization
-function used to explore implications of information loss.  By
-examining potential outcomes, we can understand the risks and costs
-associated with the information loss.
+The domain lattice formalism allows formal modeling of data fusion in
+ISR systems where multiple information flows occur at different
+abstraction levels with disparate underlying semantics.  Similarly, we
+can treat information loss due to communication errors or
+countermeasures as an abstraction.  Systems see the lossy, abstracted
+signal. Then a concretization function is used to explore potential
+implications of information loss over a space of potential
+outcomes. As a result, an analyst can understand the risks and costs
+associated with decision in the context of information loss.
 
 \subsection{Model Transformation and Composition}
 
-Functors among domains in the domain lattice are frequently used to
-transform models themselves.  Instead of communicating among models in
-different domains, we can transform models themselves among domains.
-For example, one can transform an analog component model into a
-digital model of the same component.  That model may then be simulated
-in a traditional digital simulator with full knowledge that the
-abstraction is sound.  The same model could be concretized back to the
-analog domain allowing exploration of the consistency of the
-transformation.  Specifically, determine if the abstraction removes
-information critical to the specific model.
+Functors among domains are frequently used to transform models
+themselves.  Instead of communicating among models in different
+domains, we can transform models themselves to different domains.  For
+example, one can transform an analog component model into a digital
+model of the same component.  That model may then be simulated in a
+traditional digital simulator with full knowledge that the abstraction
+is sound.  The same model could be concretized back to the analog
+domain allowing exploration of the consistency of the transformation.
+by determining if the abstraction removes critical information.
 
-Model composition is a specific example of model transformation.  If
+Model composition is a specific instance of model transformation.  If
 two models exist in two different domains, transforming both into a
 common domain forming a pullback in the domain lattice results in a
 single model with properties of both original models.  This approach
 allows modeling a system using a collection of models representing
-different modeling perspectives. In an ISR domain such as software
+different modeling perspectives. In an ISR domain involving a software
 defined radio or network, a security model defining confidentiality
 and integrity properties can be written and composed with a system
 model for analysis~\cite{Kimmell:08:System-Synthesi}.  Similarly, an
-Electronic Warfare (EW)
-system may be modeled as a collection of operational modes that are
-composed for analysis or for a complete system definition.
+EW system may be modeled as a collection of separate operational modes
+that are then composed for analysis or for a complete system
+definition.  Finally, in an ISR domain different models of the same
+adversary can be composed to form a more complete representation.
 
 \subsection{Coalgebra Reification}
 
-Among the more exciting potential applications is reification or
-synthesis of simulators and systems from coalgebraic models.  Monads
-have become a common programming pattern in functional languages
-implementing options, state, IO and domain specific languages.  Monads
-are algebraic structures with specific properties that allow
-execution, thus writing a algebraic specification can result in an
-executable monadic
+Among the more exciting applications is reification or synthesis of
+simulators and systems from coalgebraic models.  Monads have become a
+common programming pattern in functional languages implementing
+options, state, IO and domain specific languages.  Monads are
+algebraic structures with specific properties that allow execution,
+thus writing a algebraic specification can result in an executable
+monadic
 specification~\cite{Kimmell:08:Synthesizing-So,Peck:11:Hardware/Softwa}.
 
 Comonads are to monads as coalgebras are to algebras.  They are
@@ -421,11 +421,12 @@ each model, but only the underlying domain and specification morphisms
 associated with it.
 
 We see applications in both the ISR and EW domains.  In ISR synthesis
-of MAC policies from security models, synthesis of security protocol
-implementations from analyzed models, synthesis of triggers and
-filters from models of information abstraction.  In EW synthesis of
-implementations and simulations from waveforms and adversary models.
+of MAC policies from security models; synthesis of security protocol
+implementations from analyzed models; and filters from models of
+information abstraction.  In EW synthesis of implementations and
+simulations from waveforms and adversary models in a manner similar to
+software defined radios.
 
-\bibliography{sldg}
+\bibliography{main}
 
 \end{document}

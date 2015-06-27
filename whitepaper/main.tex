@@ -7,16 +7,20 @@
 \usepackage{fullpage}
 \usepackage{times}
 \usepackage{url}
+\usepackage{float}
+\usepackage{wrapfig}
+\addtolength{\textheight}{.25in}
+\usepackage[compact]{titlesec}
 
 \usepackage{rosetta}
 \usepackage{graphicx}
 %\usepackage{diagrams}
 \usepackage{comment}
 \usepackage{color}
+\setcounter{section}{1}
 
 \newcommand{\nael}[1]{\color{blue}{ \em #1 }\color{black}}
 \renewcommand{\nael}[1]{}
-\bibliographystyle{unsrt}
 
 \begin{document}
 
@@ -61,8 +65,9 @@ Technical Point of Contact: \begin{minipage}[t]{4in}
 
 \clearpage
 
-\section{Introduction}
+%%\section{Introduction}
 
+\noindent
 We propose a framework and associated tools for multi-resolution modeling and analysis of
 complex heterogeneous networked multi-scale systems-of-systems (SoS) targeting Technical
 Area \textbf{TA2}.  The proposed approach uses a \emph{Lattice of Coalgebras} to provide a
@@ -96,6 +101,13 @@ deal with reactive, non-terminating embedded systems.
   unmanned platforms, driving shipments a CAGR of 5 percent through 2022.''}
 
 \subsection{A Lattice of Domains}
+
+%%\begin{wrapfigure}{r}{0.5\textwidth}
+%%  \centering
+%%  \includegraphics[width=0.5\textwidth]{figures/semi-lattice-detailed}
+%%  \caption{Example modeling domain Lattice}
+%%  \label{fig:semi-lattice-detailed}
+%%\end{wrapfigure}
 
 The vocabulary and semantics for defining models in a specific domain can be thought of as
 a \emph{modeling domain} or simply \emph{domain}.  Each domain provides units of semantic
@@ -181,13 +193,6 @@ supporting model heterogeneity and composition necessary for system-level design
 % specification pairs.  Other important facet algebra operations include equivalence
 % (isomorphism), relabeling and instantiation.
 
-\begin{figure}[hbtp]
-  \centering
-  \includegraphics[width=0.6\textwidth]{figures/semi-lattice-detailed.pdf}
-  \caption{Example modeling domain Lattice}
-  \label{fig:semi-lattice-detailed}
-\end{figure}
-
 \subsection{Functors and Specification Transformation}
 
 A \emph{functor} in the domain lattice is a function specifying a mapping from one domain
@@ -221,10 +226,12 @@ between domains in the lattice provides exactly this assurance.
 A Galois connection ($C,\alpha,\gamma,A$) exists between two complete lattices ($C$,
 $\sqsubseteq$) and ($A$, $\sqsubseteq$) if and only if
 
+\vspace{-\bigskipamount}
 \[\alpha:C \rightarrow A \wedge \gamma:C \leftarrow A\]
 
 \noindent are monotone functions that satisfy:
 
+\vspace{-\bigskipamount}
 \begin{equation}
 \label{eq:c1}
 \gamma \circ \alpha \sqsupseteq \lambda c.c
@@ -369,6 +376,7 @@ simulations from waveforms and adversary models in a manner similar to software 
 radios.
 
 \begin{small}
+\bibliographystyle{unsrt}
 \bibliography{main}
 \end{small}
 
